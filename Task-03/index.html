@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Password Checker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Enter the Password:</h2>
+    <input type="password" id="password" placeholder="Enter password" oninput="checkStrength()" />
+
+
+    <div id="strength"></div>
+    <ul id="feedback"></ul>
+
+    <script>
+        function checkStrength() {
+            const password = document.getElementById('password').value;
+            const strength = document.getElementById('strength');
+            const feedback = document.getElementById('feedback');
+
+            feedback.innerHTML = '';
+            let score = 0;
+
+            const rules = [
+                { test: password.length >= 8, msg: 'At least 8 characters' },
+                { test: /[A-Z]/.test(password), msg: 'Uppercase letter' },
+                { test: /[a-z]/.test(password), msg: 'Lowercase letter' },
+                { test: /[0-9]/.test(password), msg: 'Number' },
+                { test: /[^A-Za-z0-9]/.test(password), msg: 'Special character' }
+            ];
+
+            rules.forEach(rule => {
+                const li = document.createElement('li');
+                li.textContent = rule.msg;
+                if (rule.test) {
+                    li.style.color = 'green';
+                    score++;
+                } else {
+                    li.style.color = 'red';
+                }
+                feedback.appendChild(li);
+            });
+
+            if (password.length === 0) {
+                strength.textContent = '';
+                return;
+            }
+
+            strength.textContent =
+                score <= 2 ? 'Weak' :
+                    score <= 4 ? 'Medium' :
+                        'Strong';
+        }
+    </script>
+
+</body>
+
+</html>
